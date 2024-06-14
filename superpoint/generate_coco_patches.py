@@ -32,7 +32,7 @@ def _preprocess(image):
 
 
 if __name__ == '__main__':
-    tf.set_random_seed(seed)
+    tf.random.set_seed(seed)
 
     parser = argparse.ArgumentParser()
     parser.add_argument('config', type=str, default=None)

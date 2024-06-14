@@ -77,7 +77,7 @@ class Coco(BaseDataset):
 
         # Python function
         def _read_points(filename):
-            return np.load(filename.decode('utf-8'))['points'].astype(np.float6432)
+            return np.load(filename.decode('utf-8'))['points'].astype(np.float32)
 
         names = tf.data.Dataset.from_tensor_slices(files['names'])
         images = tf.data.Dataset.from_tensor_slices(files['image_paths'])
