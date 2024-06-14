@@ -161,9 +161,9 @@ def sample_homography(
         if not allow_artifacts:
             perspective_amplitude_x = min(perspective_amplitude_x, margin)
             perspective_amplitude_y = min(perspective_amplitude_y, margin)
-        perspective_displacement = tf.truncated_normal([1], 0., perspective_amplitude_y/2)
-        h_displacement_left = tf.truncated_normal([1], 0., perspective_amplitude_x/2)
-        h_displacement_right = tf.truncated_normal([1], 0., perspective_amplitude_x/2)
+        perspective_displacement = tf.random.truncated_normal([1], 0., perspective_amplitude_y/2)
+        h_displacement_left = tf.random.truncated_normal([1], 0., perspective_amplitude_x/2)
+        h_displacement_right = tf.random.truncated_normal([1], 0., perspective_amplitude_x/2)
         pts2 += tf.stack([tf.concat([h_displacement_left, perspective_displacement], 0),
                           tf.concat([h_displacement_left, -perspective_displacement], 0),
                           tf.concat([h_displacement_right, perspective_displacement], 0),
@@ -174,7 +174,7 @@ def sample_homography(
     # sample several scales, check collision with borders, randomly pick a valid one
     if scaling:
         scales = tf.concat(
-                [[1.], tf.truncated_normal([n_scales], 1, scaling_amplitude/2)], 0)
+                [[1.], tf.random.truncated_normal([n_scales], 1, scaling_amplitude/2)], 0)
         center = tf.reduce_mean(pts2, axis=0, keepdims=True)
         scaled = tf.expand_dims(pts2 - center, axis=0) * tf.expand_dims(
                 tf.expand_dims(scales, 1), 1) + center
