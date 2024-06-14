@@ -22,7 +22,7 @@ def photometric_augmentation(data, **config):
 
         indices = tf.range(len(primitives))
         if config['random_order']:
-            indices = tf.random_shuffle(indices)
+            indices = tf.random.shuffle(indices)
 
         def step(i, image):
             fn_pairs = [(tf.equal(indices[i], j),
