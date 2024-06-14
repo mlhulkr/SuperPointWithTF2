@@ -49,8 +49,8 @@ def classical_detector_descriptor(im, **config):
         descriptors = np.zeros((im.shape[0], im.shape[1], 256), np.float64)
         descriptors[points[1, :], points[0, :]] = np.transpose(desc)
 
-    detections = detections.astype(np.float6432)
-    descriptors = descriptors.astype(np.float6432)
+    detections = detections.astype(np.float32)
+    descriptors = descriptors.astype(np.float32)
     return (detections, descriptors)
 
 

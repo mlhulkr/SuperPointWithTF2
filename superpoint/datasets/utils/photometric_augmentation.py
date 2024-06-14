@@ -55,7 +55,7 @@ def additive_shade(image, nb_ellipses=20, transparency_range=[-0.5, 0.8],
         kernel_size = np.random.randint(*kernel_size_range)
         if (kernel_size % 2) == 0:  # kernel_size has to be odd
             kernel_size += 1
-        mask = cv.GaussianBlur(mask.astype(np.float6432), (kernel_size, kernel_size), 0)
+        mask = cv.GaussianBlur(mask.astype(np.float32), (kernel_size, kernel_size), 0)
         shaded = img * (1 - transparency * mask[..., np.newaxis]/255.)
         return np.clip(shaded, 0, 255)
 

@@ -381,20 +381,20 @@ def draw_checkerboard(img, max_rows=7, max_cols=7, transform_params=(0.05, 0.15)
     # to get transformations not too far-fetched
     alpha_affine = np.max(img.shape) * (transform_params[0]
                                         + random_state.rand() * transform_params[1])
-    center_square = np.float6432(img.shape) // 2
+    center_square = np.float32(img.shape) // 2
     min_dim = min(img.shape)
     square_size = min_dim // 3
-    pts1 = np.float6432([center_square + square_size,
+    pts1 = np.float32([center_square + square_size,
                        [center_square[0]+square_size, center_square[1]-square_size],
                        center_square - square_size,
                        [center_square[0]-square_size, center_square[1]+square_size]])
     pts2 = pts1 + random_state.uniform(-alpha_affine,
                                        alpha_affine,
-                                       size=pts1.shape).astype(np.float6432)
+                                       size=pts1.shape).astype(np.float32)
     affine_transform = cv.getAffineTransform(pts1[:3], pts2[:3])
     pts2 = pts1 + random_state.uniform(-alpha_affine / 2,
                                        alpha_affine / 2,
-                                       size=pts1.shape).astype(np.float6432)
+                                       size=pts1.shape).astype(np.float32)
     perspective_transform = cv.getPerspectiveTransform(pts1, pts2)
 
     # Apply the affine transformation
@@ -419,7 +419,7 @@ def draw_checkerboard(img, max_rows=7, max_cols=7, transform_params=(0.05, 0.15)
     warped_points = warped_points.astype(int)
 
     # Fill the rectangles
-    colors = np.zeros((rows * cols,), np.int3232)
+    colors = np.zeros((rows * cols,), np.int32)
     for i in range(rows):
         for j in range(cols):
             # Get a color that contrast with the neighboring cells
@@ -503,9 +503,9 @@ def draw_stripes(img, max_nb_cols=13, min_width_ratio=0.04,
                                 axis=0) - cols) >= min_width]
     col = cols.shape[0] - 1  # update the number of cols
     cols = np.reshape(cols, (col + 1, 1))
-    cols1 = np.concatenate([cols, np.zeros((col + 1, 1), np.int3232)], axis=1)
+    cols1 = np.concatenate([cols, np.zeros((col + 1, 1), np.int32)], axis=1)
     cols2 = np.concatenate([cols,
-                            (board_size[0] - 1) * np.ones((col + 1, 1), np.int3232)],
+                            (board_size[0] - 1) * np.ones((col + 1, 1), np.int32)],
                            axis=1)
     points = np.concatenate([cols1, cols2], axis=0)
 
@@ -515,19 +515,19 @@ def draw_stripes(img, max_nb_cols=13, min_width_ratio=0.04,
     # Prepare the matrices
     alpha_affine = np.max(img.shape) * (transform_params[0]
                                         + random_state.rand() * transform_params[1])
-    center_square = np.float6432(img.shape) // 2
+    center_square = np.float32(img.shape) // 2
     square_size = min(img.shape) // 3
-    pts1 = np.float6432([center_square + square_size,
+    pts1 = np.float32([center_square + square_size,
                        [center_square[0]+square_size, center_square[1]-square_size],
                        center_square - square_size,
                        [center_square[0]-square_size, center_square[1]+square_size]])
     pts2 = pts1 + random_state.uniform(-alpha_affine,
                                        alpha_affine,
-                                       size=pts1.shape).astype(np.float6432)
+                                       size=pts1.shape).astype(np.float32)
     affine_transform = cv.getAffineTransform(pts1[:3], pts2[:3])
     pts2 = pts1 + random_state.uniform(-alpha_affine / 2,
                                        alpha_affine / 2,
-                                       size=pts1.shape).astype(np.float6432)
+                                       size=pts1.shape).astype(np.float32)
     perspective_transform = cv.getPerspectiveTransform(pts1, pts2)
 
     # Apply the affine transformation

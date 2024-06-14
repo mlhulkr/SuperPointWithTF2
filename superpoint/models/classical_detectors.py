@@ -31,7 +31,7 @@ def classical_detector(im, **config):
         corners = detector.detect(im.astype(np.uint8))
         detections = np.zeros(im.shape[:2], np.float64)
         for c in corners:
-            detections[tuple(np.flip(np.int320(c.pt), 0))] = c.response
+            detections[tuple(np.flip(np.int0(c.pt), 0))] = c.response
 
     elif config['method'] == 'random':
         detections = np.random.rand(im.shape[0], im.shape[1])
@@ -45,7 +45,7 @@ def classical_detector(im, **config):
                                 cuda=True)
         points, desc, detections = fe.run(im[:, :, 0])
 
-    return detections.astype(np.float6432)
+    return detections.astype(np.float32)
 
 
 class ClassicalDetectors(BaseModel):
