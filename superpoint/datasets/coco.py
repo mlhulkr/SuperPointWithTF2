@@ -64,7 +64,7 @@ class Coco(BaseDataset):
         is_training = split_name == 'training'
 
         def _read_image(path):
-            image = tf.read_file(path)
+            image = tf.io.read_file(path)
             image = tf.image.decode_png(image, channels=3)
             return tf.cast(image, tf.float32)
 

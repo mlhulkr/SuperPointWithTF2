@@ -1,4 +1,5 @@
 tensorflow-gpu
+tensorflow_addons
 numpy
 scipy
 opencv-python

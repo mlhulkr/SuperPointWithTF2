@@ -164,7 +164,7 @@ class SyntheticShapes(BaseDataset):
                        np.flip(points.astype(np.float32), 1))
 
         def _read_image(filename):
-            image = tf.read_file(filename)
+            image = tf.io.read_file(filename)
             image = tf.image.decode_png(image, channels=1)
             return tf.cast(image, tf.float32)
 
