@@ -5,6 +5,7 @@ import os
 import argparse
 import yaml
 from pathlib import Path
+import tensorflow_addons
 
 from superpoint.models.homographies import (sample_homography, flat2mat,
                                             invert_homography)
@@ -56,7 +57,7 @@ if __name__ == '__main__':
 
     # Warp the image
     H = sample_homography(tf.shape(image)[:2], **config['homographies'])
-    warped_image = tf.contrib.image.transform(image, H, interpolation="BILINEAR")
+    warped_image = tensorflow_addons.image.transform(image, H, interpolation="BILINEAR")
     patch_ratio = config['homographies']['patch_ratio']
     new_shape = tf.multiply(tf.cast(shape, tf.float32), patch_ratio)
     new_shape = tf.cast(new_shape, tf.int32)

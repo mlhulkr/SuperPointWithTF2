@@ -1,6 +1,7 @@
 import tensorflow as tf
 import cv2 as cv
 import numpy as np
+import tensorflow_addons
 
 from superpoint.datasets.utils import photometric_augmentation as photaug
 from superpoint.models.homographies import (sample_homography, compute_valid_mask,
@@ -41,7 +42,7 @@ def homographic_augmentation(data, add_homography=False, **config):
     with tf.name_scope('homographic_augmentation'):
         image_shape = tf.shape(data['image'])[:2]
         homography = sample_homography(image_shape, **config['params'])[0]
-        warped_image = tf.contrib.image.transform(
+        warped_image = tensorflow_addons.image.transform(
                 data['image'], homography, interpolation='BILINEAR')
         valid_mask = compute_valid_mask(image_shape, homography,
                                         config['valid_border_margin'])
