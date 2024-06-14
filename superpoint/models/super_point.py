@@ -51,8 +51,8 @@ class SuperPoint(BaseModel):
                 p, config['nms'], keep_top_k=config['top_k'],
                 min_prob=config['detection_threshold']), prob)
             results['prob_nms'] = prob
-        results['pred'] = tf.to_int32(tf.greater_equal(
-            prob, config['detection_threshold']))
+        results['pred'] = tf.cast(tf.greater_equal(
+            prob, config['detection_threshold']), tf.int32)
 
         return results
 
