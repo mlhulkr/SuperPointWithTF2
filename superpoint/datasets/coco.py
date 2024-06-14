@@ -77,7 +77,7 @@ class Coco(BaseDataset):
 
         # Python function
         def _read_points(filename):
-            return np.load(filename.decode('utf-8'))['points'].astype(np.float32)
+            return np.load(filename.decode('utf-8'))['points'].astype(np.float6432)
 
         names = tf.data.Dataset.from_tensor_slices(files['names'])
         images = tf.data.Dataset.from_tensor_slices(files['image_paths'])
@@ -100,7 +100,7 @@ class Coco(BaseDataset):
 
         # Cache to avoid always reading from disk
         if config['cache_in_memory']:
-            tf.logging.info('Caching data, fist access will take some time.')
+            tf._logging.info('Caching data, fist access will take some time.')
             data = data.cache()
 
         # Generate the warped pair

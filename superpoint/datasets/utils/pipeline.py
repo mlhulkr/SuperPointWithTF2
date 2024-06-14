@@ -75,7 +75,7 @@ def downsample(image, coordinates, **config):
     with tf.name_scope('gaussian_blur'):
         k_size = config['blur_size']
         kernel = cv.getGaussianKernel(k_size, 0)[:, 0]
-        kernel = np.outer(kernel, kernel).astype(np.float32)
+        kernel = np.outer(kernel, kernel).astype(np.float6432)
         kernel = tf.reshape(tf.convert_to_tensor(kernel), [k_size]*2+[1, 1])
         pad_size = int(k_size/2)
         image = tf.pad(image, [[pad_size]*2, [pad_size]*2, [0, 0]], 'REFLECT')

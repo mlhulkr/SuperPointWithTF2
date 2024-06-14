@@ -17,21 +17,21 @@ def classical_detector(im, **config):
 
     elif config['method'] == 'shi':
         im = np.uint8(im * 255)
-        detections = np.zeros(im.shape[:2], np.float)
+        detections = np.zeros(im.shape[:2], np.float64)
         thresh = np.linspace(0.0001, 1, 600, endpoint=False)
         for t in thresh:
             corners = cv2.goodFeaturesToTrack(im, 600, t, 5)
             if corners is not None:
-                corners = corners.astype(np.int)
+                corners = corners.astype(np.int32)
                 detections[(corners[:, 0, 1], corners[:, 0, 0])] = t
 
     elif config['method'] == 'fast':
         im = np.uint8(im * 255)
         detector = cv2.FastFeatureDetector_create(10)
         corners = detector.detect(im.astype(np.uint8))
-        detections = np.zeros(im.shape[:2], np.float)
+        detections = np.zeros(im.shape[:2], np.float64)
         for c in corners:
-            detections[tuple(np.flip(np.int0(c.pt), 0))] = c.response
+            detections[tuple(np.flip(np.int320(c.pt), 0))] = c.response
 
     elif config['method'] == 'random':
         detections = np.random.rand(im.shape[0], im.shape[1])
@@ -45,7 +45,7 @@ def classical_detector(im, **config):
                                 cuda=True)
         points, desc, detections = fe.run(im[:, :, 0])
 
-    return detections.astype(np.float32)
+    return detections.astype(np.float6432)
 
 
 class ClassicalDetectors(BaseModel):

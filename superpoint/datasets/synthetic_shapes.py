@@ -70,7 +70,7 @@ class SyntheticShapes(BaseDataset):
     def dump_primitive_data(self, primitive, tar_path, config):
         temp_dir = Path(os.environ['TMPDIR'], primitive)
 
-        tf.logging.info('Generating tarfile for primitive {}.'.format(primitive))
+        tf._logging.info('Generating tarfile for primitive {}.'.format(primitive))
         synthetic_dataset.set_random_state(np.random.RandomState(
                 config['generation']['random_seed']))
         for split, size in self.config['generation']['split_sizes'].items():
@@ -88,8 +88,8 @@ class SyntheticShapes(BaseDataset):
 
                 b = config['preprocessing']['blur_size']
                 image = cv2.GaussianBlur(image, (b, b), 0)
-                points = (points * np.array(config['preprocessing']['resize'], np.float)
-                          / np.array(config['generation']['image_size'], np.float))
+                points = (points * np.array(config['preprocessing']['resize'], np.float64)
+                          / np.array(config['generation']['image_size'], np.float64))
                 image = cv2.resize(image, tuple(config['preprocessing']['resize'][::-1]),
                                    interpolation=cv2.INTER_LINEAR)
 
@@ -101,7 +101,7 @@ class SyntheticShapes(BaseDataset):
         tar.add(temp_dir, arcname=primitive)
         tar.close()
         shutil.rmtree(temp_dir)
-        tf.logging.info('Tarfile dumped to {}.'.format(tar_path))
+        tf._logging.info('Tarfile dumped to {}.'.format(tar_path))
 
     def _init_dataset(self, **config):
         # Parse drawing primitives
@@ -126,7 +126,7 @@ class SyntheticShapes(BaseDataset):
                 self.dump_primitive_data(primitive, tar_path, config)
 
             # Untar locally
-            tf.logging.info('Extracting archive for primitive {}.'.format(primitive))
+            tf._logging.info('Extracting archive for primitive {}.'.format(primitive))
             tar = tarfile.open(tar_path)
             temp_dir = Path(os.environ['TMPDIR'])
             tar.extractall(path=temp_dir)
@@ -160,8 +160,8 @@ class SyntheticShapes(BaseDataset):
                         **config['generation']['params']['generate_background'])
                 points = np.array(getattr(synthetic_dataset, primitive)(
                         image, **config['generation']['params'].get(primitive, {})))
-                yield (np.expand_dims(image, axis=-1).astype(np.float32),
-                       np.flip(points.astype(np.float32), 1))
+                yield (np.expand_dims(image, axis=-1).astype(np.float6432),
+                       np.flip(points.astype(np.float6432), 1))
 
         def _read_image(filename):
             image = tf.read_file(filename)
@@ -170,7 +170,7 @@ class SyntheticShapes(BaseDataset):
 
         # Python function
         def _read_points(filename):
-            return np.load(filename.decode('utf-8')).astype(np.float32)
+            return np.load(filename.decode('utf-8')).astype(np.float6432)
 
         if config['on-the-fly']:
             data = tf.data.Dataset.from_generator(
@@ -198,7 +198,7 @@ class SyntheticShapes(BaseDataset):
         data = data.map(pipeline.add_dummy_valid_mask)
 
         if config['cache_in_memory'] and not config['on-the-fly']:
-            tf.logging.info('Caching data, fist access will take some time.')
+            tf._logging.info('Caching data, fist access will take some time.')
             data = data.cache()
 
         # Apply augmentation

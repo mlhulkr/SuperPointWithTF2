@@ -68,7 +68,7 @@ def random_brightness(img, keypoints, random_state=None, max_change=50):
     if random_state is None:
         random_state = np.random.RandomState(None)
     brightness = random_state.randint(-max_change, max_change)
-    new_img = img.astype(np.int16) + brightness
+    new_img = img.astype(np.int3216) + brightness
     return (np.clip(new_img, 0, 255), keypoints)
 
 
@@ -165,14 +165,14 @@ def affine_transform(img, keypoints, random_state=None, affine_params=(0.05, 0.1
     shape = img.shape
     alpha_affine = np.max(shape) * (affine_params[0] +
                                     random_state.rand() * affine_params[1])
-    center_square = np.float32(shape) // 2
+    center_square = np.float6432(shape) // 2
     square_size = min(shape) // 3
-    pts1 = np.float32([center_square + square_size,
+    pts1 = np.float6432([center_square + square_size,
                        [center_square[0]+square_size, center_square[1]-square_size],
                        center_square - square_size])
     pts2 = pts1 + random_state.uniform(-alpha_affine,
                                        alpha_affine,
-                                       size=pts1.shape).astype(np.float32)
+                                       size=pts1.shape).astype(np.float6432)
     M = cv.getAffineTransform(pts1, pts2)
 
     # Warp the image and keypoints
@@ -244,10 +244,10 @@ def elastic_transform(img, keypoints, random_state=None,
     dy = gaussian_filter((random_state.rand(*shape) * 2 - 1), sigma) * alpha
 
     # Apply the distortion
-    distorted_img = cv.remap(img, np.float32(x + dx), np.float32(y + dy),
+    distorted_img = cv.remap(img, np.float6432(x + dx), np.float6432(y + dy),
                              interpolation=cv.INTER_LINEAR)
-    inverse_map_x = np.float32(x - dx)
-    inverse_map_y = np.float32(y - dy)
+    inverse_map_x = np.float6432(x - dx)
+    inverse_map_y = np.float6432(y - dy)
     keypoints_x = inverse_map_x[keypoints[:, 1], keypoints[:, 0]]
     keypoints_y = inverse_map_y[keypoints[:, 1], keypoints[:, 0]]
     new_keypoints = np.concatenate([keypoints_x[:, None], keypoints_y[:, None]], axis=1)
@@ -325,7 +325,7 @@ def add_shade(img, keypoints, random_state=None, nb_ellipses=20,
                       (kernel_size_interval[1] - kernel_size_interval[0]))
     if (kernel_size % 2) == 0:  # kernel_size has to be odd
         kernel_size += 1
-    mask = cv.GaussianBlur(mask.astype(np.float), (kernel_size, kernel_size), 0)
+    mask = cv.GaussianBlur(mask.astype(np.float64), (kernel_size, kernel_size), 0)
     shaded = img * (1 - transparency * mask/255.)
     shaded = np.clip(shaded, 0, 255)
     return (shaded.astype(np.uint8), keypoints)
@@ -342,8 +342,8 @@ def add_fog(img, keypoints, random_state=None, max_nb_ellipses=20,
     if random_state is None:
         random_state = np.random.RandomState(None)
 
-    centers = np.empty((0, 2), dtype=np.int)
-    rads = np.empty((0, 1), dtype=np.int)
+    centers = np.empty((0, 2), dtype=np.int32)
+    rads = np.empty((0, 1), dtype=np.int32)
     min_dim = min(img.shape) / 4
     shaded_img = img.copy()
     for i in range(max_nb_ellipses):

@@ -19,9 +19,9 @@ def classical_detector_descriptor(im, **config):
         keypoints = np.array([k.pt for k in keypoints]).astype(int)
         desc = np.array(desc)
 
-        detections = np.zeros(im.shape[:2], np.float)
+        detections = np.zeros(im.shape[:2], np.float64)
         detections[keypoints[:, 1], keypoints[:, 0]] = responses
-        descriptors = np.zeros((im.shape[0], im.shape[1], 128), np.float)
+        descriptors = np.zeros((im.shape[0], im.shape[1], 128), np.float64)
         descriptors[keypoints[:, 1], keypoints[:, 0]] = desc
 
     elif config['method'] == 'orb':
@@ -32,9 +32,9 @@ def classical_detector_descriptor(im, **config):
         keypoints = np.array([k.pt for k in keypoints]).astype(int)
         desc = np.array(desc)
 
-        detections = np.zeros(im.shape[:2], np.float)
+        detections = np.zeros(im.shape[:2], np.float64)
         detections[keypoints[:, 1], keypoints[:, 0]] = responses
-        descriptors = np.zeros((im.shape[0], im.shape[1], 32), np.float)
+        descriptors = np.zeros((im.shape[0], im.shape[1], 32), np.float64)
         descriptors[keypoints[:, 1], keypoints[:, 0]] = desc
 
     elif config['method'] == 'pretrained_magic_point':
@@ -46,11 +46,11 @@ def classical_detector_descriptor(im, **config):
                                 cuda=False)
         points, desc, detections = fe.run(im[:, :, 0])
         points = points.astype(int)
-        descriptors = np.zeros((im.shape[0], im.shape[1], 256), np.float)
+        descriptors = np.zeros((im.shape[0], im.shape[1], 256), np.float64)
         descriptors[points[1, :], points[0, :]] = np.transpose(desc)
 
-    detections = detections.astype(np.float32)
-    descriptors = descriptors.astype(np.float32)
+    detections = detections.astype(np.float6432)
+    descriptors = descriptors.astype(np.float6432)
     return (detections, descriptors)
 
 

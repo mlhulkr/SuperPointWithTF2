@@ -307,7 +307,7 @@ class BaseModel(metaclass=ABCMeta):
         else:
             options, run_metadata = None, None
 
-        tf.logging.info('Start training')
+        tf._logging.info('Start training')
         for i in range(iterations):
             loss, summaries, _ = self.sess.run(
                     [self.loss, self.summaries, self.trainer],
@@ -318,7 +318,7 @@ class BaseModel(metaclass=ABCMeta):
                 self.save(checkpoint_path)
             if 'validation' in self.datasets and i % validation_interval == 0:
                 metrics = self.evaluate('validation', mute=True)
-                tf.logging.info(
+                tf._logging.info(
                         'Iter {:4d}: loss {:.4f}'.format(i, loss) +
                         ''.join([', {} {:.4f}'.format(m, metrics[m]) for m in metrics]))
 
@@ -335,7 +335,7 @@ class BaseModel(metaclass=ABCMeta):
                         with open(osp.join(output_dir,
                                            'profile_{}.json'.format(i)), 'w') as f:
                             f.write(chrome_trace)
-        tf.logging.info('Training finished')
+        tf._logging.info('Training finished')
 
     def predict(self, data, keys='pred', batch=False):
         assert set(data.keys()) >= set(self.input_spec.keys())
@@ -362,7 +362,7 @@ class BaseModel(metaclass=ABCMeta):
         self.sess.run(self.dataset_iterators[dataset].initializer)
 
         if not mute:
-            tf.logging.info('Starting evaluation of dataset \'{}\''.format(dataset))
+            tf._logging.info('Starting evaluation of dataset \'{}\''.format(dataset))
             if max_iterations:
                 pbar = tqdm(total=max_iterations, ascii=True)
         i = 0
@@ -380,7 +380,7 @@ class BaseModel(metaclass=ABCMeta):
                 if i == max_iterations:
                     break
         if not mute:
-            tf.logging.info('Finished evaluation')
+            tf._logging.info('Finished evaluation')
             if max_iterations:
                 pbar.close()
 
@@ -400,7 +400,7 @@ class BaseModel(metaclass=ABCMeta):
 
     def save(self, checkpoint_path):
         step = self.sess.run(self.global_step)
-        tf.logging.info('Saving checkpoint for iteration #{}'.format(step))
+        tf._logging.info('Saving checkpoint for iteration #{}'.format(step))
         self.saver.save(self.sess, checkpoint_path, write_meta_graph=False,
                         global_step=step)
 
