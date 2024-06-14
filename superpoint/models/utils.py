@@ -58,7 +58,7 @@ def detector_loss(keypoint_map, logits, valid_mask=None, **config):
     shape = tf.concat([tf.shape(labels)[:3], [1]], axis=0)
     labels = tf.concat([2*labels, tf.ones(shape)], 3)
     # Add a small random matrix to randomly break ties in argmax
-    labels = tf.argmax(labels + tf.random_uniform(tf.shape(labels), 0, 0.1),
+    labels = tf.argmax(labels + tf.random.uniform(tf.shape(labels), 0, 0.1),
                        axis=3)
 
     # Mask the pixels if bordering artifacts appear

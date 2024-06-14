@@ -182,7 +182,7 @@ def sample_homography(
             valid = tf.range(1, n_scales + 1)  # all scales are valid except scale=1
         else:
             valid = tf.where(tf.reduce_all((scaled >= 0.) & (scaled <= 1.), [1, 2]))[:, 0]
-        idx = valid[tf.random_uniform((), maxval=tf.shape(valid)[0], dtype=tf.int32)]
+        idx = valid[tf.random.uniform((), maxval=tf.shape(valid)[0], dtype=tf.int32)]
         pts2 = scaled[idx]
 
     # Random translation
@@ -191,8 +191,8 @@ def sample_homography(
         if allow_artifacts:
             t_min += translation_overflow
             t_max += translation_overflow
-        pts2 += tf.expand_dims(tf.stack([tf.random_uniform((), -t_min[0], t_max[0]),
-                                         tf.random_uniform((), -t_min[1], t_max[1])]),
+        pts2 += tf.expand_dims(tf.stack([tf.random.uniform((), -t_min[0], t_max[0]),
+                                         tf.random.uniform((), -t_min[1], t_max[1])]),
                                axis=0)
 
     # Random rotation
@@ -211,7 +211,7 @@ def sample_homography(
         else:
             valid = tf.where(tf.reduce_all((rotated >= 0.) & (rotated <= 1.),
                                            axis=[1, 2]))[:, 0]
-        idx = valid[tf.random_uniform((), maxval=tf.shape(valid)[0], dtype=tf.int32)]
+        idx = valid[tf.random.uniform((), maxval=tf.shape(valid)[0], dtype=tf.int32)]
         pts2 = rotated[idx]
 
     # Rescale to actual size

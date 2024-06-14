@@ -14,15 +14,15 @@ augmentations = [
 
 
 def additive_gaussian_noise(image, stddev_range=[5, 95]):
-    stddev = tf.random_uniform((), *stddev_range)
-    noise = tf.random_normal(tf.shape(image), stddev=stddev)
+    stddev = tf.random.uniform((), *stddev_range)
+    noise = tf.random.normal(tf.shape(image), stddev=stddev)
     noisy_image = tf.clip_by_value(image + noise, 0, 255)
     return noisy_image
 
 
 def additive_speckle_noise(image, prob_range=[0.0, 0.005]):
-    prob = tf.random_uniform((), *prob_range)
-    sample = tf.random_uniform(tf.shape(image))
+    prob = tf.random.uniform((), *prob_range)
+    sample = tf.random.uniform(tf.shape(image))
     noisy_image = tf.where(sample <= prob, tf.zeros_like(image), image)
     noisy_image = tf.where(sample >= (1. - prob), 255.*tf.ones_like(image), noisy_image)
     return noisy_image
