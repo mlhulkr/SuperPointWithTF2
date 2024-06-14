@@ -236,7 +236,7 @@ class BaseModel(metaclass=ABCMeta):
                         train_batch = self.config['batch_size']*self.n_gpus
                         d = d.repeat().padded_batch(
                                 train_batch, output_shapes).prefetch(train_batch)
-                        self.dataset_iterators[n] = d.make_one_shot_iterator()
+                        self.dataset_iterators[n] = tf.compat.v1.data.make_one_shot_iterator(d)
                     else:
                         d = d.padded_batch(self.config['eval_batch_size']*self.n_gpus,
                                            output_shapes)

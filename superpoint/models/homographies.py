@@ -234,7 +234,7 @@ def invert_homography(H):
     """
     Computes the inverse transformation for a flattened homography transformation.
     """
-    return mat2flat(tf.matrix_inverse(flat2mat(H)))
+    return mat2flat(tf.linalg.inv(flat2mat(H)))
 
 
 def flat2mat(H):
@@ -273,8 +273,8 @@ def compute_valid_mask(image_shape, homography, erosion_radius=0):
         mask = tf.nn.erosion2d(
                 mask[tf.newaxis, ..., tf.newaxis],
                 tf.cast(tf.constant(kernel)[..., tf.newaxis], tf.float32),
-                [1, 1, 1, 1], [1, 1, 1, 1], 'SAME')[0, ..., 0] + 1.
-    return tf.cast(mask)
+                [1, 1, 1, 1], 'SAME', 'NHWC', [1, 1, 1, 1], )[0, ..., 0] + 1.
+    return tf.cast(mask, tf.int32)
 
 
 def warp_points(points, homography):
